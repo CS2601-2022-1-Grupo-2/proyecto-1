@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "proyecto-1"
+version = "0.0.0"
+description = "SVM"
+authors = ["Alberto Oporto <alberto.oporto@utec.edu.pe>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+repository = "https://github.com/CS2601-2022-1-Grupo-2/proyecto-1"
+packages = [
+	{ include = "proyecto_1" }
+]
+
+[tool.poetry.dependencies]
+PyWavelets = "^1.3.0"
+numpy      = "^1.22.3"
+pandas     = "^1.4.2"
+python     = "^3.6"
+
+[tool.poetry.scripts]
+proyecto-1 = 'proyecto_1.main:main'
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

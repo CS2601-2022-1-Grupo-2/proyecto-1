@@ -1,7 +1,7 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=proyecto-1-git
-pkgver=r4.7af8f92
+pkgver=r6.4921c9d
 pkgrel=1
 pkgdesc="SVM"
 arch=('any')
@@ -12,7 +12,11 @@ depends=(
 	"python-pandas"
 	"python-pywavelets"
 )
-makedepends=("python-setuptools")
+makedepends=(
+	"python-build"
+	"python-installer"
+	"python-wheel"
+)
 checkdepends=()
 optdepends=()
 provides=(${pkgname%-git})
@@ -33,11 +37,11 @@ pkgver() {
 build() {
 	cd "$srcdir/$pkgname"
 
-	python setup.py build
+	python -m build --wheel --no-isolation
 }
 
 package() {
 	cd "$srcdir/$pkgname"
 
-	python setup.py install --root="$pkgdir/" --optimize=1 --skip-build
+	python -m installer --destdir="$pkgdir" dist/*.whl
 }
