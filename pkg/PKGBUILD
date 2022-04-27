@@ -1,13 +1,17 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=proyecto-1-git
-pkgver=r10.bc4aa00
+pkgver=r3.78b28a5
 pkgrel=1
 pkgdesc="SVM"
 arch=('any')
 url="https://github.com/CS2601-2022-1-Grupo-2/proyecto-1"
 license=('GPL')
-depends=("python-numpy" "python-pandas")
+depends=(
+	"python-numpy"
+	"python-pandas"
+	"python-pywavelets"
+)
 makedepends=("python-setuptools")
 checkdepends=()
 optdepends=()

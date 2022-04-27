@@ -17,6 +17,7 @@ setuptools.setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)', # noqa
     ],
     install_requires=[
+        'PyWavelets',
         'numpy',
         'pandas',
     ],
