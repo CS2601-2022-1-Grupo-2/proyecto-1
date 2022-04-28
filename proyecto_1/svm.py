@@ -1,20 +1,20 @@
 import os
 
-class svm(object):
+class Svm(object):
 
     def __init__(self, directory: str):
-        for file in os.listdir(directory):
-            if file == "Train":
-                self.train_path: str = os.path.join(directory, file)
-            elif file == "Test":
-                self.test_path: str = os.path.join(directory, file)
+        for file in os.scandir(directory):
+            if file.name == "Train":
+                self.train_path: str = file.path
+            elif file.name == "Test":
+                self.test_path: str = file.path
 
     def train(self):
-        for charact in os.listdir(self.train_path):
-            for file in os.listdir(os.path.join(self.train_path, charact)):
-                print(file)
+        for characteristic in os.scandir(self.train_path):
+            for file in os.scandir(characteristic):
+                print(file.path)
 
     def test(self):
-        for charact in os.listdir(self.train_path):
-            for file in os.listdir(os.path.join(self.train_path, charact)):
-                print(file)
+        for characteristic in os.scandir(self.train_path):
+            for file in os.scandir(characteristic):
+                print(file.path)
