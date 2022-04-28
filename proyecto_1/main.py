@@ -1,5 +1,7 @@
 import argparse
 
+from .svm import svm
+
 def main():
     parser = argparse.ArgumentParser(description="Transit sign detector")
 
@@ -12,4 +14,6 @@ def main():
 
     args = parser.parse_args()
 
-    print(args.directory)
+    machine = svm(args.directory)
+    machine.train()
+    machine.test()
