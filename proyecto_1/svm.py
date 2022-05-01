@@ -1,4 +1,5 @@
 import os
+from .image import process_image
 
 class Svm(object):
 
@@ -12,9 +13,9 @@ class Svm(object):
     def train(self):
         for characteristic in os.scandir(self.train_path):
             for file in os.scandir(characteristic):
-                print(file.path)
+                print(process_image(file.path))
 
     def test(self):
         for characteristic in os.scandir(self.train_path):
             for file in os.scandir(characteristic):
-                print(file.path)
+                print(process_image(file.path))
