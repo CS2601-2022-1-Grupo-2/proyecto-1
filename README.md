@@ -4,6 +4,7 @@ Informe: https://es.overleaf.com/1939281427thmkprpqngqh
 
 ## Dependencias
 
+* `Pillow`
 * `PyWavelets`
 * `numpy`
 * `pandas`
