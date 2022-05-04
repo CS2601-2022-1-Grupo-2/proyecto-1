@@ -16,13 +16,16 @@ def process_image(path: str, size: int = 64, n: int = 4) -> np.ndarray:
 
 def get_vectors(path: str, test: bool):
     v = []
+    y = []
 
     if test:
         for characteristic in os.scandir(path):
             for file in os.scandir(characteristic):
                 v.append(process_image(file.path))
+                y.append(characteristic.name)
     else:
         for file in os.scandir(path):
             v.append(process_image(file.path))
+            y.append(None)
 
-    return np.array(v)
+    return (np.array(v), y)

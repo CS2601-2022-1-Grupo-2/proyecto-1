@@ -1,6 +1,6 @@
 import argparse
 
-from .svm import Svm
+from .svm import SvmAndKnn
 
 def main():
     parser = argparse.ArgumentParser(description="Transit sign detector")
@@ -14,6 +14,6 @@ def main():
 
     args = parser.parse_args()
 
-    svm = Svm(args.directory)
+    svm = SvmAndKnn(args.directory)
     svm.train()
     svm.test()
