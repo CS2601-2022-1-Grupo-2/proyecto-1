@@ -10,6 +10,7 @@ license=('GPL')
 depends=(
 	"python-numpy"
 	"python-pandas"
+	"python-pillow"
 	"python-pywavelets"
 )
 makedepends=(
