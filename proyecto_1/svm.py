@@ -1,5 +1,7 @@
+import numpy as np
 import os
-from .image import process_image
+
+from .image import get_vectors
 
 class Svm(object):
 
@@ -11,11 +13,7 @@ class Svm(object):
                 self.test_path: str = file.path
 
     def train(self):
-        for characteristic in os.scandir(self.train_path):
-            for file in os.scandir(characteristic):
-                print(process_image(file.path))
+        print(get_vectors(self.train_path, True))
 
     def test(self):
-        for characteristic in os.scandir(self.train_path):
-            for file in os.scandir(characteristic):
-                print(process_image(file.path))
+        print(get_vectors(self.test_path, False))
