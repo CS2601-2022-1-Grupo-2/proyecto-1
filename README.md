@@ -8,3 +8,4 @@ Informe: https://es.overleaf.com/1939281427thmkprpqngqh
 * `PyWavelets`
 * `numpy`
 * `pandas`
+* `scikit-learn`

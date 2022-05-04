@@ -12,6 +12,7 @@ depends=(
 	"python-pandas"
 	"python-pillow"
 	"python-pywavelets"
+	"python-scikit-learn"
 )
 makedepends=(
 	"python-build"
