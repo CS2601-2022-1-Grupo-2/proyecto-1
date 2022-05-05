@@ -1,4 +1,5 @@
 import argparse
+import time
 
 from .svmknn import SvmKnn
 
@@ -39,8 +40,16 @@ def main():
         default = "linear"
     )
 
+    parser.add_argument(
+        "-s",
+        "--seed",
+        type    = int,
+        help    = "The seed of the  pseudo random number generator.",
+        default = time.time_ns() % 2**32
+    )
+
     args = parser.parse_args()
 
-    svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel)
+    svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel, args.seed)
     svm.train()
     svm.test()

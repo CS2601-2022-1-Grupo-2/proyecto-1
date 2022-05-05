@@ -11,11 +11,12 @@ from sklearn.svm import SVC
 
 class SvmKnn(object):
 
-    def __init__(self, directory: str, method: str, k: int, kernel: str):
+    def __init__(self, directory: str, method: str, k: int, kernel: str, seed: int):
         self.directory = directory
         self.method    = method
         self.k         = k
         self.kernel    = kernel
+        self.seed      = seed
 
         for file in os.scandir(directory):
             if file.name == "Train.csv":
@@ -46,7 +47,10 @@ class SvmKnn(object):
         if self.method == "knn":
             self.nbrs = NearestNeighbors(n_neighbors=self.k).fit(X)
         elif self.method == "svm":
-            print("TODO")
+            self.svc = SVC(
+                kernel=self.kernel,
+                probability=True,
+                random_state=self.seed).fit(X, self.y)
 
     def test(self):
         X, true_y = self.get_vectors(self.test_path)
@@ -56,6 +60,6 @@ class SvmKnn(object):
             _, indices = self.nbrs.kneighbors(X)
             y_pred = self.knn_query(indices)
         elif self.method == "svm":
-            print("TODO")
+            y_pred = self.svc.predict(X)
 
         print(confusion_matrix(true_y, y_pred))
