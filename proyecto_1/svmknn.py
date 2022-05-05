@@ -5,6 +5,7 @@ import pandas as pd
 
 from .image import process_image
 from sklearn.neighbors import NearestNeighbors
+from sklearn.metrics import confusion_matrix
 from collections import Counter
 
 class SvmKnn(object):
@@ -34,7 +35,7 @@ class SvmKnn(object):
 
         return (np.array(v), y)
 
-    def knnQuery(self, indices):
+    def knn_query(self, indices):
         return [Counter([self.y[i] for i in ii]).most_common(1)[0][0] for ii in indices]
 
     def train(self):
@@ -47,9 +48,12 @@ class SvmKnn(object):
 
     def test(self):
         X, true_y = self.get_vectors(self.test_path)
+        y_pred = []
 
         if self.method == "knn":
             _, indices = self.nbrs.kneighbors(X)
-            print(self.knnQuery(indices))
+            y_pred = self.knn_query(indices)
         elif self.method == "svm":
             print("TODO")
+
+        print(confusion_matrix(true_y, y_pred))
