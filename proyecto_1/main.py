@@ -1,8 +1,6 @@
 import argparse
 import time
 
-from .svmknn import SvmKnn
-
 def main():
     parser = argparse.ArgumentParser(description="Transit sign detector")
 
@@ -49,6 +47,8 @@ def main():
     )
 
     args = parser.parse_args()
+
+    from .svmknn import SvmKnn
 
     svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel, args.seed)
     svm.train()

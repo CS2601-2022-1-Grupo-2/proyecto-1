@@ -45,7 +45,7 @@ class SvmKnn(object):
         X, self.y = self.get_vectors(self.train_path)
 
         if self.method == "knn":
-            self.nbrs = NearestNeighbors(n_neighbors=self.k).fit(X)
+            self.nbrs = NearestNeighbors(n_neighbors=self.k, n_jobs=-1).fit(X)
         elif self.method == "svm":
             self.svc = SVC(
                 kernel=self.kernel,

@@ -1,13 +1,14 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=proyecto-1-git
-pkgver=r13.89644ca
+pkgver=r27.dd6e2d3
 pkgrel=1
 pkgdesc="SVM"
 arch=('any')
 url="https://github.com/CS2601-2022-1-Grupo-2/proyecto-1"
 license=('GPL')
 depends=(
+	"bash-completion"
 	"python-numpy"
 	"python-pandas"
 	"python-pillow"
@@ -46,4 +47,8 @@ package() {
 	cd "$srcdir/$pkgname"
 
 	python -m installer --destdir="$pkgdir" dist/*.whl
+
+	local _completiondir="$srcdir/$pkgname$(pkg-config bash-completion --variable=completionsdir)"
+	mkdir -p "$_completiondir"
+	echo "complete -F _longopt proyecto-1" > "$_completiondir/proyecto-1"
 }
