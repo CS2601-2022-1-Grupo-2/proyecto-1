@@ -30,8 +30,17 @@ def main():
         default = 5
     )
 
+    parser.add_argument(
+        "-K",
+        "--kernel",
+        type    = str,
+        help    = "The kernel used by the SVM",
+        choices = ["linear", "poly", "rbf", "sigmoid", "precomputed"],
+        default = "linear"
+    )
+
     args = parser.parse_args()
 
-    svm = SvmKnn(args.directory, args.method, args.neighbors)
+    svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel)
     svm.train()
     svm.test()

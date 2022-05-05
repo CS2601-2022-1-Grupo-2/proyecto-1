@@ -4,16 +4,18 @@ import numpy as np
 import pandas as pd
 
 from .image import process_image
-from sklearn.neighbors import NearestNeighbors
-from sklearn.metrics import confusion_matrix
 from collections import Counter
+from sklearn.metrics import confusion_matrix
+from sklearn.neighbors import NearestNeighbors
+from sklearn.svm import SVC
 
 class SvmKnn(object):
 
-    def __init__(self, directory: str, method: str, k: int):
+    def __init__(self, directory: str, method: str, k: int, kernel: str):
         self.directory = directory
         self.method    = method
         self.k         = k
+        self.kernel    = kernel
 
         for file in os.scandir(directory):
             if file.name == "Train.csv":
