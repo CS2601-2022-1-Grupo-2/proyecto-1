@@ -1,7 +1,7 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=proyecto-1-git
-pkgver=r27.dd6e2d3
+pkgver=r27.11df41c
 pkgrel=1
 pkgdesc="SVM"
 arch=('any')
@@ -48,7 +48,7 @@ package() {
 
 	python -m installer --destdir="$pkgdir" dist/*.whl
 
-	local _completiondir="$srcdir/$pkgname$(pkg-config bash-completion --variable=completionsdir)"
+	local _completiondir="$pkgdir/$(pkg-config bash-completion --variable=completionsdir)"
 	mkdir -p "$_completiondir"
 	echo "complete -F _longopt proyecto-1" > "$_completiondir/proyecto-1"
 }
