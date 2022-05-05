@@ -21,8 +21,17 @@ def main():
         default = "knn"
     )
 
+    parser.add_argument(
+        "-k",
+        "--neighbors",
+        type    = int,
+        help    = "K for knn",
+        metavar = "K",
+        default = 5
+    )
+
     args = parser.parse_args()
 
-    svm = SvmKnn(args.directory, args.method)
+    svm = SvmKnn(args.directory, args.method, args.neighbors)
     svm.train()
     svm.test()
