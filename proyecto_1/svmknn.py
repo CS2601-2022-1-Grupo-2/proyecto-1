@@ -6,7 +6,7 @@ import pandas as pd
 from .image import process_image
 from collections import Counter
 from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVC
@@ -71,4 +71,6 @@ class SvmKnn(object):
         elif self.method == "svm":
             y_pred = self.svc.predict(X)
 
-        print(confusion_matrix(true_y, y_pred))
+        np.set_printoptions(precision=2)
+        print(confusion_matrix(true_y, y_pred, normalize="true"))
+        print(accuracy_score(true_y, y_pred))
