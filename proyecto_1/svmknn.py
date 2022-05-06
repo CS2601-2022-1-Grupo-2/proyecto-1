@@ -5,7 +5,9 @@ import pandas as pd
 
 from .image import process_image
 from collections import Counter
+from sklearn import preprocessing
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVC
 
@@ -17,6 +19,8 @@ class SvmKnn(object):
         self.k         = k
         self.kernel    = kernel
         self.seed      = seed
+        self.scaler    = preprocessing.MinMaxScaler()
+
 
         for file in os.scandir(directory):
             if file.name == "Train.csv":
@@ -25,7 +29,7 @@ class SvmKnn(object):
                 self.test_path: str = file.path
 
 
-    def get_vectors(self, csv_path: str):
+    def get_vectors(self, csv_path: str, fit: bool = False):
         v = []
         y = []
 
@@ -36,13 +40,18 @@ class SvmKnn(object):
                 v.append(process_image(os.path.join(self.directory, df.at[i, "Path"])))
                 y.append(df.at[i, "ClassId"])
 
-        return (np.array(v), y)
+        if fit:
+            v = self.scaler.fit_transform(np.array(v))
+        else:
+            v = self.scaler.transform(np.array(v))
+
+        return (v, y)
 
     def knn_query(self, indices):
         return [Counter([self.y[i] for i in ii]).most_common(1)[0][0] for ii in indices]
 
     def train(self):
-        X, self.y = self.get_vectors(self.train_path)
+        X, self.y = self.get_vectors(self.train_path, True)
 
         if self.method == "knn":
             self.nbrs = NearestNeighbors(n_neighbors=self.k, n_jobs=-1).fit(X)
