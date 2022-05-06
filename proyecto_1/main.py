@@ -51,9 +51,5 @@ def main():
     from .svmknn import SvmKnn
 
     svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel, args.seed)
-    cruce=svm.cross()
-    print(cruce)
-    svm.bootstrap()
-    svm.biasvar()
     svm.train()
     svm.test()
