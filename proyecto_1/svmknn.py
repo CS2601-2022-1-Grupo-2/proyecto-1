@@ -4,11 +4,10 @@ import numpy as np
 import pandas as pd
 
 from .image import process_image
-from collections import Counter
 from sklearn import preprocessing
 from sklearn.metrics import confusion_matrix, zero_one_loss
 from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.neighbors import NearestNeighbors
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
 class SvmKnn(object):
@@ -30,9 +29,11 @@ class SvmKnn(object):
         else:
             v = self.scaler.transform(np.array(v))
 
-        return (v, y)
+        return (v, np.array(y))
 
     def __init__(self, directory: str, method: str, k: int, kernel: str, seed: int):
+        np.set_printoptions(precision=2)
+
         self.directory = directory
         self.method    = method
         self.k         = k
@@ -51,30 +52,17 @@ class SvmKnn(object):
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             self.X, self.y, test_size=0.3, random_state=self.seed)
 
-    def knn_query(self, indices):
-        return [Counter([self.y_train[i] for i in ii]).most_common(1)[0][0] for ii in indices]
+        if self.method == "knn":
+            self.model = KNeighborsClassifier(n_neighbors=k, n_jobs=-1)
+        elif self.method == "svm":
+            self.model = SVC(kernel=kernel, probability=True, random_state=seed)
 
     def train(self):
-        if self.method == "knn":
-            self.nbrs = NearestNeighbors(n_neighbors=self.k, n_jobs=-1).fit(self.X_train)
-        elif self.method == "svm":
-            self.svc = SVC(
-                kernel=self.kernel,
-                probability=True,
-                random_state=self.seed).fit(self.X_train, self.y_train)
+        self.predictor = self.model.fit(self.X_train, self.y_train)
 
     def test(self):
-        y_pred = []
+        y_pred = self.predictor.predict(self.X_test)
 
-        if self.method == "knn":
-            _, indices = self.nbrs.kneighbors(self.X_test)
-            y_pred = self.knn_query(indices)
-        elif self.method == "svm":
-            y_pred = self.svc.predict(self.X_test)
-
-        np.set_printoptions(precision=2)
         print(confusion_matrix(self.y_test, y_pred, normalize="true"))
         print(zero_one_loss(self.y_test, y_pred))
-
-        if self.method == "svm":
-            print(cross_val_score(self.svc, self.X, self.y))
+        print(1-cross_val_score(self.model, self.X, self.y, n_jobs=-1))
