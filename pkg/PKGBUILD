@@ -9,6 +9,7 @@ url="https://github.com/CS2601-2022-1-Grupo-2/proyecto-1"
 license=('GPL')
 depends=(
 	"bash-completion"
+	"python-mlxtend"
 	"python-numpy"
 	"python-pandas"
 	"python-pillow"
