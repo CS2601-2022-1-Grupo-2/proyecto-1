@@ -58,7 +58,7 @@ class SvmKnn(object):
         elif self.method == "svm":
             self.model = SVC(kernel=kernel, probability=True, random_state=seed)
 
-    def ebv(self, X, y, l):
+    def ebv(self, X, y):
         error = 0
         bias = 0
         variance = 0
@@ -80,6 +80,9 @@ class SvmKnn(object):
         y_pred = self.predictor.predict(self.X_test)
 
         print(confusion_matrix(self.y_test, y_pred, normalize="true"))
-        print(zero_one_loss(self.y_test, y_pred))
-        print(1-cross_val_score(self.model, self.X, self.y, n_jobs=-1))
-        print(self.ebv(self.X,self.y,10))
+        #print(zero_one_loss(self.y_test, y_pred))
+
+        error, bias, variance = self.ebv(self.X, self.y)
+        print(f"Error: {error}")
+        print(f"Bias: {bias}")
+        print(f"Variance: {variance}")
