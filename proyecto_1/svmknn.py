@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 
 class SvmKnn(object):
 
-    def get_vectors(self, csv_paths: list[str], fit: bool = False):
+    def get_vectors(self, csv_paths, fit = False):
         v = []
         y = []
 
@@ -31,7 +31,7 @@ class SvmKnn(object):
 
         return (v, np.array(y))
 
-    def __init__(self, directory: str, method: str, k: int, kernel: str, seed: int):
+    def __init__(self, directory, method, k, kernel, seed):
         np.set_printoptions(precision=2)
 
         self.directory = directory
@@ -57,6 +57,19 @@ class SvmKnn(object):
         elif self.method == "svm":
             self.model = SVC(kernel=kernel, probability=True, random_state=seed)
 
+    def ebv(self, X, y, l):
+        error = 0
+        bias = 0
+        variance = 0
+        errors = []
+
+        #TODO
+
+        for p in self.predictor.predict_proba(X):
+            errors.append(p)
+
+        return errors, bias, variance
+
     def train(self):
         self.predictor = self.model.fit(self.X_train, self.y_train)
 
@@ -66,3 +79,5 @@ class SvmKnn(object):
         print(confusion_matrix(self.y_test, y_pred, normalize="true"))
         print(zero_one_loss(self.y_test, y_pred))
         print(1-cross_val_score(self.model, self.X, self.y, n_jobs=-1))
+        print(self.predictor.predict_proba(self.X))
+        print(self.ebv(self.X,self.y,10))
