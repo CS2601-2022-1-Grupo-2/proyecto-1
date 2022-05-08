@@ -6,7 +6,7 @@ import pandas as pd
 from .image import process_image
 from collections import Counter
 from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import confusion_matrix, zero_one_loss
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.neighbors import NearestNeighbors
 from sklearn.svm import SVC
@@ -46,9 +46,10 @@ class SvmKnn(object):
             elif file.name == "Test.csv":
                 self.test_path: str = file.path
 
-        X, y = self.get_vectors([self.train_path, self.test_path], True)
+        self.X, self.y = self.get_vectors([self.train_path, self.test_path], True)
 
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.3, random_state=self.seed)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+            self.X, self.y, test_size=0.3, random_state=self.seed)
 
     def knn_query(self, indices):
         return [Counter([self.y_train[i] for i in ii]).most_common(1)[0][0] for ii in indices]
@@ -73,4 +74,7 @@ class SvmKnn(object):
 
         np.set_printoptions(precision=2)
         print(confusion_matrix(self.y_test, y_pred, normalize="true"))
-        print(accuracy_score(self.y_test, y_pred))
+        print(zero_one_loss(self.y_test, y_pred))
+
+        if self.method == "svm":
+            print(cross_val_score(self.svc, self.X, self.y))
