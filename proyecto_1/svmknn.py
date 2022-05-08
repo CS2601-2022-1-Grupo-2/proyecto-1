@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix, zero_one_loss
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from statistics import mean
 
 class SvmKnn(object):
 
@@ -63,12 +64,14 @@ class SvmKnn(object):
         variance = 0
         errors = []
 
-        #TODO
+        for i, p in enumerate(self.predictor.predict_proba(X)):
+            errors.append(1.0 - p[y[i]])
 
-        for p in self.predictor.predict_proba(X):
-            errors.append(p)
+        error = mean(errors)
+        bias = mean([0.0 if e <= 0.5 else 1.0 for e in errors])
+        variance = error - bias
 
-        return errors, bias, variance
+        return error, bias, variance
 
     def train(self):
         self.predictor = self.model.fit(self.X_train, self.y_train)
@@ -79,5 +82,4 @@ class SvmKnn(object):
         print(confusion_matrix(self.y_test, y_pred, normalize="true"))
         print(zero_one_loss(self.y_test, y_pred))
         print(1-cross_val_score(self.model, self.X, self.y, n_jobs=-1))
-        print(self.predictor.predict_proba(self.X))
         print(self.ebv(self.X,self.y,10))
