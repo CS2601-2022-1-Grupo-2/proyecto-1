@@ -5,15 +5,15 @@ import pandas as pd
 
 from .image import process_image
 from sklearn import preprocessing
-from sklearn.metrics import confusion_matrix, zero_one_loss
-from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from statistics import mean
 
 class SvmKnn(object):
 
-    def get_vectors(self, csv_paths, fit = False):
+    def get_vectors(self, csv_paths, fit, split):
         v = []
         y = []
 
@@ -30,9 +30,14 @@ class SvmKnn(object):
         else:
             v = self.scaler.transform(np.array(v))
 
-        return (v, np.array(y))
+        y = np.array(y)
 
-    def __init__(self, directory, method, k, kernel, seed):
+        if split != 1.0:
+            _, v, _, y = train_test_split(v,y, test_size=split)
+
+        return (v, y)
+
+    def __init__(self, directory, method, k, kernel, seed, split):
         np.set_printoptions(precision=2)
 
         self.directory = directory
@@ -48,7 +53,7 @@ class SvmKnn(object):
             elif file.name == "Test.csv":
                 self.test_path: str = file.path
 
-        self.X, self.y = self.get_vectors([self.train_path, self.test_path], True)
+        self.X, self.y = self.get_vectors([self.train_path, self.test_path], True, split)
 
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             self.X, self.y, test_size=0.3, random_state=self.seed)

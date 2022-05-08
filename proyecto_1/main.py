@@ -46,10 +46,26 @@ def main():
         default = time.time_ns() % 2**32
     )
 
+    parser.add_argument(
+        "-S",
+        "--split-size",
+        type    = float,
+        help    = "The percentage of the dataset to use.",
+        default = 1.0
+    )
+
     args = parser.parse_args()
 
     from .svmknn import SvmKnn
 
-    svm = SvmKnn(args.directory, args.method, args.neighbors, args.kernel, args.seed)
+    svm = SvmKnn(
+        args.directory,
+        args.method,
+        args.neighbors,
+        args.kernel,
+        args.seed,
+        args.split_size
+    )
+
     svm.train()
     svm.test()
